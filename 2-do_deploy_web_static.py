@@ -14,16 +14,16 @@ def do_deploy(archive_path):
     
     if not os.path.isfile(archive_path):
         return False
-    compressed_file = archive_path.split("/")[-1]
-    no_extension = compressed_file.split(".")[0]
+    compressedFiles = archive_path.split("/")[-1]
+    without_extension = compressedFiles.split(".")[0]
     
     try:
-       remote_path = "/data/web_static/releases/{}/".format(no_extension)
+       remote_path = "/data/web_static/releases/{}/".format(without_extension)
        sym_link = "/data/web_static/current"
        put(archive_path, "/tmp/")
        run("sudo mkdir -p {}".format(remote_path))
-       run("sudo tar -xvzf /tmp/{} -C {}".format(compressed_file, remote_path))
-       run("sudo rm /tmp/{}".format(compressed_file))
+       run("sudo tar -xvzf /tmp/{} -C {}".format(compressedFiles, remote_path))
+       run("sudo rm /tmp/{}".format(compressedFiles))
        run("sudo mv {}/web_static/* {}".format(remote_path, remote_path))
        run("sudo rm -rf {}/web_static".format(remote_path))
        run("sudo rm -rf /data/web_static/current")
