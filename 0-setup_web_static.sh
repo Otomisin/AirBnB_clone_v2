@@ -1,4 +1,5 @@
- script to install and conf nginx
+ #!/usr/bin/env bash
+ # Setup a web servers for the deployment of web_static.
 
 #install nginx if not installed
 sudo apt-get update
@@ -22,10 +23,11 @@ echo "<!DOCTYPE html>
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
 #change directory name
-sudo chown -R ubuntu:ubuntu /data/
+chown -R ubuntu:ubuntu /data
 
-#set up the page to be served
-sudo sed -i '/server_name _;/a \ \tlocation /hbnb_static {\n\t\talias /data/web_static/current;\n\t}\n' /etc/nginx/sites-available/default
+#set up the page to be served and change ownershhip
+
+sudo sed -i '39 i\ \tlocation /hbnb_static {\n\t\talias /data/web_static/current;\n\t}\n' /etc/nginx/sites-enabled/default
 
 #restart the server
 sudo service nginx restart
