@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# A Bash script to install and confifgure nginx
+
+#install nginx if not installed
+sudo apt-get update
+sudo apt-get install nginx -y
+
+#Creating multiple repositories
+sudo mkdir -p /data/web_static/releases/test/
+sudo mkdir -p /data/web_static/shared/
+
+#Create a fake html page with a simple content
+echo "<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    ALX Holberton School
+  </body>
+</html>" | sudo tee /data/web_static/releases/test/index.html
+
+#Creat a symbolic link for test repo
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
+
+#Change directory ownership /data/
+sudo chown -R ubuntu:ubuntu /data/
+
+#Set up the page to be served by server
+sudo sed -i '/server_name _;/a \ \tlocation /hbnb_static {\n\t\talias /data/web_static/current;\n\t}\n' /etc/nginx/sites-available/default
+
+#Restart the server
+sudo service nginx restart
