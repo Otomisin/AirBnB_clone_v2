@@ -1,0 +1,9 @@
+Script started on Thu Apr  6 12:10:15 2023
+]0;root@8cde19e91b0f: /AirBnB_clone_v2root@8cde19e91b0f:/AirBnB_clone_v2# l
+[0m[01;32m0-nginx_likes_port_80[0m*  [01;32m2-do_deploy_web_static.py[0m*  [01;32mconsole.py[0m*  setup_mysql_dev.sql   to
+[01;32m0-setup_web_static.sh[0m*  AUTHORS                     [01;34mmodels[0m/      setup_mysql_test.sql  [01;34mweb_static[0m/
+[01;32m1-pack_web_static.py[0m*   README.md                   [01;32mpwd[0m*         [01;34mtests[0m/
+]0;root@8cde19e91b0f: /AirBnB_clone_v2root@8cde19e91b0f:/AirBnB_clone_v2# exit  
+exit
+
+Script done on Thu Apr  6 12:10:51 2023
