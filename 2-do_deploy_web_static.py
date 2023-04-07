@@ -1,17 +1,21 @@
 #!/usr/bin/python3
-"""a script to send an archive file to a remote server
-and decompress it"""
+"""
+    a script to send an archive file to a remote server
+    and decompress it
+"""
 
 from fabric.api import run, env, put
+from fabric.api import *
 import os.path
 
 env.hosts = ['18.209.152.209', '34.207.156.104']
-env.key_filename = '~/.ssh/school'
-env.user = 'ubuntu'
+env.key_filename = "~/.ssh/school"
+env.user = "ubuntu"
 
 def do_deploy(archive_path):
-    """a function to deploy code and decompress it"""
-    
+    """
+        a function to deploy code and decompress it
+    """    
     if not os.path.isfile(archive_path):
         return False
     compressedFiles = archive_path.split("/")[-1]
