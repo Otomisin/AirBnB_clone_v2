@@ -3,12 +3,12 @@
 from fabric.api import *
 
 
-env.hosts = ['44.210.150.159', '35.173.47.15']
+env.hosts = ['18.209.152.209', '34.207.156.104']
 env.user = "ubuntu"
 
 
 def do_clean(number=0):
-    """ CLEANS """
+    """ Cleans out-of-date archives """
 
     number = int(number)
 

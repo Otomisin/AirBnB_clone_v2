@@ -1,4 +1,4 @@
-# Setup the web servers for the deployment of web_static
+# Setup web server for web_static deployment
 exec { '/usr/bin/env apt -y update' : }
 -> package { 'nginx':
   ensure => installed,
@@ -18,6 +18,10 @@ exec { '/usr/bin/env apt -y update' : }
 -> file { '/data/web_static/shared':
   ensure => 'directory'
 }
+-> file { '/data/web_static/current':
+  ensure => 'link',
+  target => '/data/web_static/releases/test'
+}
 -> file { '/data/web_static/releases/test/index.html':
   ensure  => 'present',
   content => "<!DOCTYPE html>
@@ -28,10 +32,6 @@ exec { '/usr/bin/env apt -y update' : }
     <p>Nginx server test</p>
   </body>
 </html>"
-}
--> file { '/data/web_static/current':
-  ensure => 'link',
-  target => '/data/web_static/releases/test'
 }
 -> exec { 'chown -R ubuntu:ubuntu /data/':
   path => '/usr/bin/:/usr/local/bin/:/bin/'
