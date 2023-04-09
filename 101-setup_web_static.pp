@@ -1,33 +1,18 @@
 # Update package index
-apt::update { 'update':
-  before => Class['nginx'],
+exec { 'apt-update':
+  command => '/usr/bin/apt-get update',
+  path    => ['/usr/bin', '/usr/sbin'],
+  before  => Class['nginx'],
 }
 
 # Install Nginx package
-class { 'nginx':
+package { 'nginx':
   ensure => installed,
 }
 
 # Create directory structure for web_static deployment
-file { '/data/web_static':
+file { ['/data/web_static', '/data/web_static/releases', '/data/web_static/shared', '/data/web_static/releases/test']:
   ensure => directory,
-}
-->
-file { '/data/web_static/releases':
-  ensure => directory,
-}
-->
-file { '/data/web_static/shared':
-  ensure => directory,
-}
-->
-file { '/data/web_static/releases/test':
-  ensure => directory,
-}
-->
-file { '/data/web_static/current':
-  ensure => 'link',
-  target => '/data/web_static/releases/test',
 }
 
 # Create HTML file for Nginx server test
@@ -45,8 +30,8 @@ file { '/data/web_static/releases/test/index.html':
 
 # Change ownership of /data directory to ubuntu user
 file { '/data':
-  owner => 'ubuntu',
-  group => 'ubuntu',
+  owner   => 'ubuntu',
+  group   => 'ubuntu',
   recurse => true,
 }
 
@@ -54,7 +39,8 @@ file { '/data':
 file { '/var/www/html':
   ensure => directory,
 }
-->
+
+# Create index.html for default web server
 file { '/var/www/html/index.html':
   ensure  => 'file',
   content => "<!DOCTYPE html>
@@ -72,7 +58,14 @@ file { '/etc/nginx/sites-enabled/default':
   ensure  => 'file',
   content => template('my_module/nginx.conf.erb'),
 }
-->
+
+# Create symbolic link to current web_static release
+file { '/data/web_static/current':
+  ensure => 'link',
+  target => '/data/web_static/releases/test',
+}
+
+# Ensure Nginx is running
 service { 'nginx':
   ensure => running,
 }
