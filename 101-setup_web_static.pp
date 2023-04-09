@@ -1,29 +1,38 @@
-# Setup web server for web_static deployment
-exec { '/usr/bin/env apt -y update' : }
--> package { 'nginx':
+# Update package index
+apt::update { 'update':
+  before => Class['nginx'],
+}
+
+# Install Nginx package
+class { 'nginx':
   ensure => installed,
 }
--> file { '/data':
-  ensure  => 'directory'
+
+# Create directory structure for web_static deployment
+file { '/data/web_static':
+  ensure => directory,
 }
--> file { '/data/web_static':
-  ensure => 'directory'
+->
+file { '/data/web_static/releases':
+  ensure => directory,
 }
--> file { '/data/web_static/releases':
-  ensure => 'directory'
+->
+file { '/data/web_static/shared':
+  ensure => directory,
 }
--> file { '/data/web_static/releases/test':
-  ensure => 'directory'
+->
+file { '/data/web_static/releases/test':
+  ensure => directory,
 }
--> file { '/data/web_static/shared':
-  ensure => 'directory'
-}
--> file { '/data/web_static/current':
+->
+file { '/data/web_static/current':
   ensure => 'link',
-  target => '/data/web_static/releases/test'
+  target => '/data/web_static/releases/test',
 }
--> file { '/data/web_static/releases/test/index.html':
-  ensure  => 'present',
+
+# Create HTML file for Nginx server test
+file { '/data/web_static/releases/test/index.html':
+  ensure  => 'file',
   content => "<!DOCTYPE html>
 <html>
   <head>
@@ -31,19 +40,23 @@ exec { '/usr/bin/env apt -y update' : }
   <body>
     <p>Nginx server test</p>
   </body>
-</html>"
+</html>",
 }
--> exec { 'chown -R ubuntu:ubuntu /data/':
-  path => '/usr/bin/:/usr/local/bin/:/bin/'
+
+# Change ownership of /data directory to ubuntu user
+file { '/data':
+  owner => 'ubuntu',
+  group => 'ubuntu',
+  recurse => true,
 }
--> file { '/var/www':
-  ensure => 'directory'
+
+# Create directory structure for default web server
+file { '/var/www/html':
+  ensure => directory,
 }
--> file { '/var/www/html':
-  ensure => 'directory'
-}
--> file { '/var/www/html/index.html':
-  ensure  => 'present',
+->
+file { '/var/www/html/index.html':
+  ensure  => 'file',
   content => "<!DOCTYPE html>
 <html>
   <head>
@@ -51,13 +64,15 @@ exec { '/usr/bin/env apt -y update' : }
   <body>
     <p>Nginx server test</p>
   </body>
-</html>"
+</html>",
 }
-exec { 'nginx_conf':
-  environment => ['data=\ \tlocation /hbnb_static {\n\t\talias /data/web_static/current;\n\t}\n'],
-  command     => 'sed -i "39i $data" /etc/nginx/sites-enabled/default',
-  path        => '/usr/bin:/usr/sbin:/bin:/usr/local/bin'
+
+# Configure Nginx to serve static files from /data/web_static/current
+file { '/etc/nginx/sites-enabled/default':
+  ensure  => 'file',
+  content => template('my_module/nginx.conf.erb'),
 }
--> service { 'nginx':
+->
+service { 'nginx':
   ensure => running,
 }
