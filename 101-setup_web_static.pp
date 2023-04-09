@@ -67,7 +67,7 @@ file { '/var/www/html/index.html':
 </html>",
 }
 
-# Configure Nginx to serve static files from /data/web_static/current
+# Configure Nginx to serve static files in /data/web_static/current
 file { '/etc/nginx/sites-enabled/default':
   ensure  => 'file',
   content => template('my_module/nginx.conf.erb'),
