@@ -1,16 +1,15 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-# Add all the Python files to the staging area
-git add *.py
+# Add all changes
+git add -A
 
-# Commit the changes with the filename as the commit message
-for file in *.py
+# Get the list of files that have been modified
+files=$(git diff --name-only)
+
+# Loop through each file and commit with its filename as the commit message
+for file in $files
 do
-  filename=$(basename -- "$file")
-  extension="${filename##*.}"
-  filename="${filename%.*}"
-  git commit -m "$filename"
+  git commit -m "$file"
 done
 
-# Push the changes to the remote repository
 git push
