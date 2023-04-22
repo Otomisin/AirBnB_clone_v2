@@ -1,15 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# add all new and modified files to the staging area
-git add .
+# Add all the Python files to the staging area
+git add *.py
 
-# loop through the modified files
-for file in $(git diff --name-only --cached); do
-  # get the filename without the path and extension
-  filename=$(basename "$file" .$(echo "$file" | awk -F . '{print $NF}'))
-  # create the commit with the filename as the commit message
-  git commit -m "$filename" "$file"
+# Commit the changes with the filename as the commit message
+for file in *.py
+do
+  filename=$(basename -- "$file")
+  extension="${filename##*.}"
+  filename="${filename%.*}"
+  git commit -m "$filename"
 done
 
-# push the changes to the remote repository
+# Push the changes to the remote repository
 git push
