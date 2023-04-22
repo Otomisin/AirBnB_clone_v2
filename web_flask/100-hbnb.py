@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Starts a Flask web application.
+Starts the Flask web application.
 Listens on 0.0.0.0  on port 5000.
 Routes:
   *  /hbnb: Display the HTML page for hbnb home page.
