@@ -11,10 +11,12 @@ else
     for file in $(git diff --name-only --cached); do
         if [ -f "$file" ]; then
             filename=$(basename "$file")
-            message="Task ${filename%.*}"
-            git commit -m "$message" "$file"
+            message="${filename%.*} Task"
+            git add "$file"
+            git commit -m "$message"
         else
-            message="Deleted file: $file"
+            filename=$(basename "$file")
+            message="Deleted file: ${filename} Task"
             git commit -m "$message"
         fi
     done
