@@ -2,7 +2,7 @@
 
 for file in ./*; do
     if [ -f "$file" ]; then
-        message=$(cat "$file")
+        message=$(basename "$file")
         git add "$file"
         git commit -m "$message"
     fi
