@@ -10,3 +10,6 @@ for file in $(git diff --name-only --cached); do
   # create the commit with the filename as the commit message
   git commit -m "$filename" "$file"
 done
+
+# push the changes to the remote repository
+git push

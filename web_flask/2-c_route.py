@@ -1,22 +1,28 @@
 #!/usr/bin/python3
-"""a flask script to display “Hello HBNB!”"""
+"""script that starts a Flask web application"""
 from flask import Flask
-
 app = Flask(__name__)
-@app.route("/", strict_slashes=False)
-def index():
-    """a function to return hello HBNB"""
-    return "Hello HBNB!"
+app.url_map.strict_slashes = False
 
-@app.route("/hbnb", strict_slashes=False)
-def index_hbnb():
-    """a function to return HBNB"""
-    return "HBNB"
 
-@app.route("/c/<text>", strict_slashes=False)
-def index_c(text):
-    """a function to return C is fun"""
-    return f'C {text.replace("_", " ")}'
+@app.route('/')
+def hello_hbnb():
+    """print web"""
+    return 'Hello HBNB!'
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+
+@app.route('/hbnb')
+def hbnb():
+    """print web"""
+    return 'HBNB'
+
+
+@app.route('/c/<text>')
+def c_is_fun(text):
+    """print C followed by the value of the text variable"""
+    return 'C {}'.format(text.replace('_', ' '))
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
