@@ -14,7 +14,7 @@ app.url_map.strict_slashes = False
 
 @app.teardown_appcontext
 def closedb(exc):
-    """ to close a database session"""
+    """ close a database session"""
     storage.close()
 
 
