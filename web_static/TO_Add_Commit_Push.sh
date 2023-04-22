@@ -16,7 +16,7 @@ else
             git commit -m "$message"
         else
             filename=$(basename "$file")
-            message="Deleted file: ${filename} Task"
+            message="Deleted file: ${filename}"
             git commit -m "$message"
         fi
     done
