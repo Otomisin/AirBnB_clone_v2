@@ -11,7 +11,7 @@ else
     for file in $(git diff --name-only --cached); do
         if [ -f "$file" ]; then
             filename=$(basename "$file")
-            message="${filename%.*} Task"
+            message="$(echo ${filename%.*} | sed 's/-/ /g') Task"
             git add "$file"
             git commit -m "$message"
         else
